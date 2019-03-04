@@ -1,4 +1,4 @@
-package com.example.diymate;
+package ca.stclairconnect.pritchard.curtis;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.diymate", appContext.getPackageName());
+        assertEquals("ca.stclairconnect.pritchard.curtis", appContext.getPackageName());
     }
 }
