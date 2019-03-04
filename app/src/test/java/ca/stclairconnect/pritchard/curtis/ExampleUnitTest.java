@@ -1,4 +1,4 @@
-package com.example.diymate;
+package ca.stclairconnect.pritchard.curtis;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.diymate;
+package ca.stclairconnect.pritchard.curtis;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
