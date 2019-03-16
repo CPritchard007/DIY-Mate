@@ -70,6 +70,7 @@ public class ProjectsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
+        DatabaseHelper db = new DatabaseHelper(getContext());
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setAdapter(new ProjectListRecyclerAdapter(getContext()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

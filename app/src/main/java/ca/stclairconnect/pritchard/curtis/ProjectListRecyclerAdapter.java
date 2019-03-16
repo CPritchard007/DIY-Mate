@@ -36,7 +36,7 @@ String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a 
         ((CustomViewHolder)viewHolder).circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Move the user to the profile of this user
+                //Move the user to the Profile of this user
 
             }
         });

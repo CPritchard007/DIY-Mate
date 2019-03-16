@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements ProjectPageFragme
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
             switch (item.getItemId()) {
-                //use the same Recylcer page for both the global and local list
+                //use the same Recycler page for both the global and local list
                 case R.id.navigation_project_local:
                     fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
                     return true;

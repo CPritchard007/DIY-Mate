@@ -10,15 +10,19 @@ public class Project {
     private int[] gallery;
     private ArrayList<ListItem> listItems;
 
-    public Project(int id, int image, String name, String description, int[] gallery, ArrayList<ListItem> listItems) {
+    public Project(int id, String name, int image, String description) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
-        this.gallery = gallery;
-        this.listItems = listItems;
-    }
 
+    }
+    public Project(String name, int image,  String description) {
+        this.image = image;
+        this.name = name;
+        this.description = description;
+
+    }
     public int getId() {
         return id;
     }
