@@ -107,6 +107,5 @@ public class Project {
             this.url = url;
         }
 
-
     }
 }

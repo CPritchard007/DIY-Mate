@@ -1,6 +1,5 @@
 package ca.stclairconnect.pritchard.curtis;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -9,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,6 +50,7 @@ String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a 
                 ProjectPageFragment.newInstance("","");
             }
         });
+
     }
 
     @Override

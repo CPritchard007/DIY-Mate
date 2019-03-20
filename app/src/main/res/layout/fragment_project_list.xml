@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ProjectsListFragment">
 
+    <ImageView
+        android:id="@+id/add_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:src="@drawable/ic_add_circle_outline_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/recycler"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Switch
         android:id="@+id/LocalGlobal"
         android:layout_width="wrap_content"
@@ -14,6 +24,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:checked="false"
+        android:padding="4dp"
         app:layout_constraintEnd_toStartOf="@+id/DisplayListType"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,12 +33,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:contentDescription="TODO"
+        android:paddingLeft="5dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
         android:src="@drawable/ic_person_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/LocalGlobal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/LocalGlobal"
-        android:contentDescription="TODO" />
+        app:layout_constraintTop_toTopOf="@+id/LocalGlobal" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"

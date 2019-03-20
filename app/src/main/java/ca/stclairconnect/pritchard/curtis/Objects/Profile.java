@@ -8,15 +8,24 @@ public class Profile {
 
     /**
      * Class of profiles to be linked to the Database
+     * @author Curtis Pritchard
+     *
+     * @param id
+     * @param name
+     * @param tags
+     * @param description
      */
-
     public Profile(int id, String name, String[] tags, String description) {
         this.id = id;
         this.name = name;
         this.tags = tags;
         this.description = description;
     }
-
+    public Profile( String name, String[] tags, String description) {
+        this.name = name;
+        this.tags = tags;
+        this.description = description;
+    }
     public Profile(int id, String name, String description) {
         this.id = id;
         this.name = name;
@@ -24,6 +33,11 @@ public class Profile {
         this.description = description;
     }
 
+    public Profile(String name, String description) {
+        this.name = name;
+        this.tags = null;
+        this.description = description;
+    }
     public int getId() {
         return id;
     }

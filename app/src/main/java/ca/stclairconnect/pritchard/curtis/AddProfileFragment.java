@@ -1,28 +1,34 @@
 package ca.stclairconnect.pritchard.curtis;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
+import android.widget.TextView;
 
+import com.nex3z.flowlayout.FlowLayout;
+
+import ca.stclairconnect.pritchard.curtis.Objects.Profile;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProjectsListFragment.OnFragmentInteractionListener} interface
+ * {@link AddProfileFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ProjectsListFragment#newInstance} factory method to
+ * Use the {@link AddProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProjectsListFragment extends Fragment {
+public class AddProfileFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,7 +40,7 @@ public class ProjectsListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ProjectsListFragment() {
+    public AddProfileFragment() {
         // Required empty public constructor
     }
 
@@ -44,11 +50,11 @@ public class ProjectsListFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProjectsListFragment.
+     * @return A new instance of fragment AddProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProjectsListFragment newInstance(String param1, String param2) {
-        ProjectsListFragment fragment = new ProjectsListFragment();
+    public static AddProfileFragment newInstance(String param1, String param2) {
+        AddProfileFragment fragment = new AddProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,35 +72,51 @@ public class ProjectsListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_project_list, container, false);
-        DatabaseHelper db = new DatabaseHelper(getContext());
-        RecyclerView recyclerView = view.findViewById(R.id.recycler);
-        recyclerView.setAdapter(new ProjectListRecyclerAdapter(getContext()));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        final Switch global_local = view.findViewById(R.id.LocalGlobal);
-        final ImageView imageView = view.findViewById(R.id.DisplayListType);
-        final ImageView addButton = view.findViewById(R.id.add_profile);
-        global_local.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (global_local != null) {
-                    if (isChecked) {
-                        imageView.setImageResource(R.drawable.ic_person_black_24dp);
-                    }else{
-                        imageView.setImageResource(R.drawable.ic_group_black_24dp);
-                    }
-                }
-            }
-        });
-
-
-        addButton.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.fragment_add_profile, container, false);
+        final FlowLayout flowLayout = view.findViewById(R.id.editFlowLayout);
+        final EditText username = view.findViewById(R.id.edit_user);
+        final EditText description = view.findViewById(R.id.description);
+        TextView add = view.findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content,new AddProfileFragment()).addToBackStack(null).commit();
+
+                /**
+                 * android:paddingLeft="10dp"
+                 * android:paddingTop="2dp"
+                 * android:paddingRight="10dp"
+                 * android:paddingBottom="4dp"
+                 * android:text="Template"
+                 * android:textColor="#ffff"
+                 * android:textStyle="bold"
+                 */
+                TextView editText = new TextView(getContext());
+                editText.setHeight(10);
+                editText.setText("blank");
+                editText.setWidth(50);
+                editText.setHeight(50);
+                editText.setBackgroundResource(R.drawable.tag_case);
+                editText.setPadding(30,30,30,30);
+                flowLayout.addView(editText);
+            }
+        });
+        Button submit = view.findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String user = null;
+                String desc = null;
+                DatabaseHelper db = new DatabaseHelper(getContext());
+                if (username.getText() != null){
+                    user = ""+username.getText();
+                }
+                if ( description.getText() != null){
+                    desc = ""+description.getText();
+                }
+                db.addProfile(new Profile(user,desc));
             }
         });
 
