@@ -36,7 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public static final String PROJECT_COLUMN_ID = "id";
     public static final String PROJECT_COLUMN_NAME = "name";
-    public static final String PROJECT_COLUMN_IMAGE = "image";
+    public static final String PROJECT_COLUMN_USER_ID = "user";
+    public static final String PROJECT_COLUMN_IMAGE = "img";
     public static final String PROJECT_COLUMN_DESCRIPTION = "description";
 
     /*
@@ -68,7 +69,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_PROJECT_TABLE = "CREATE TABLE `" + TABLE_PROJECT + "` (" +
             PROJECT_COLUMN_ID + " INTEGER PRIMARY KEY," +
             PROJECT_COLUMN_NAME + " TEXT NOT NULL," +
-            PROJECT_COLUMN_IMAGE + " INTEGER NOT NULL," +
+            PROJECT_COLUMN_USER_ID + " INTEGER REFERENCES "+ TABLE_PROFILE + "(" + PROFILE_COLUMN_ID +")," +
+            PROJECT_COLUMN_IMAGE + " INT NOT NULL," +
             PROJECT_COLUMN_DESCRIPTION + " INTEGER NOT NULL" +
             ")";
 
@@ -130,8 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query,null);
         if (cursor.moveToFirst()){
             do {
-                cursor.moveToFirst();
-                profiles.add(new Profile(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2)));
+                profiles.add(new Profile(Integer.parseInt(cursor.getString(0)),cursor.getString(1),Integer.parseInt(cursor.getString(2)),cursor.getString(3)));
             } while(cursor.moveToNext());
         }
         db.close();
@@ -147,7 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             // pass all inner values as an arraylist
             profile = new Profile(Integer.parseInt(cursor.getString(0)),
-                    cursor.getString(1),cursor.getString(2));
+                    cursor.getString(1),Integer.parseInt(cursor.getString(2)),cursor.getString(3));
         }
         db.close();
         return profile;
@@ -173,51 +174,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query,null);
         if (cursor.moveToFirst()){
             do {
-                cursor.moveToFirst();
-                projects.add(new Project(Integer.parseInt(cursor.getString(0)),cursor.getString(1), Integer.parseInt(cursor.getString(2)),cursor.getString(3)));
+                projects.add(new Project(Integer.parseInt(cursor.getString(0)),cursor.getString(1), /*getProfile(Integer.parseInt(cursor.getString(2)))*/MainActivity.tempProfile,Integer.parseInt(cursor.getString(3)),cursor.getString(4)));
+                System.out.println(projects.size());
             } while(cursor.moveToNext());
         }
         db.close();
         return projects;
     }
 
-    public Profile getProject(int id){
+    public Project getProject(int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Profile profile = null;
+        Project project = null;
         Cursor cursor = db.query(TABLE_PROJECT,new String[]{PROJECT_COLUMN_ID,PROJECT_COLUMN_NAME,PROJECT_COLUMN_IMAGE, PROJECT_COLUMN_DESCRIPTION},PROJECT_COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)},null,null,null);
         if (cursor != null){
             cursor.moveToFirst();
             // pass all inner values as an arraylist
-            profile = new Profile(Integer.parseInt(cursor.getString(0)),
-                    cursor.getString(1),cursor.getString(2));
+            project = new Project(Integer.parseInt(cursor.getString(0)),
+                    cursor.getString(1),/*getProfile(Integer.getInteger(cursor.getString(2)))*/MainActivity.tempProfile,Integer.parseInt(cursor.getString(3)),cursor.getString(4));
         }
         db.close();
-        return profile;
+        return project;
     }
 
-    public void addProject(Profile profile){
+    public void addProject(Project project){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(PROFILE_COLUMN_NAME, profile.getName());
-        values.put(PROFILE_COLUMN_DESCRIPTION, profile.getDescription());
-        db.insert(TABLE_PROFILE, null, values);
+        values.put(PROJECT_COLUMN_NAME, project.getName());
+        values.put(PROJECT_COLUMN_IMAGE, project.getImage());
+        values.put(PROJECT_COLUMN_DESCRIPTION, project.getDescription());
+        db.insert(TABLE_PROJECT, null, values);
         db.close();
     }
 
-    public ArrayList<Project> getAllTags(){
+
+    //MARK: Tags
+
+    public ArrayList<Tag> getAllTags(){
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Project> projects = new ArrayList<Project>();
-        String query = "SELECT * FROM " + TABLE_PROJECT;
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+        String query = "SELECT * FROM " + TABLE_TAGS;
         Cursor cursor = db.rawQuery(query,null);
         if (cursor.moveToFirst()){
             do {
-                cursor.moveToFirst();
-                projects.add(new Project(Integer.parseInt(cursor.getString(0)),cursor.getString(1), Integer.parseInt(cursor.getString(2)),cursor.getString(3)));
+                tags.add(new Tag(Integer.parseInt(cursor.getString(0)),cursor.getString(1)));
             } while(cursor.moveToNext());
         }
         db.close();
-        return projects;
+        return tags;
     }
 
     public Tag getTag(int id){
@@ -239,7 +243,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TAGS_COLUMN_ID, tag.getId());
         values.put(TAGS_COLUMN_NAME, tag.getName());
-        db.insert(TABLE_PROFILE, null, values);
+        db.insert(TABLE_TAGS, null, values);
         db.close();
 
     }

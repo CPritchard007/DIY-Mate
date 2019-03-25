@@ -11,16 +11,18 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ca.stclairconnect.pritchard.curtis.Objects.Project;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProjectListRecyclerAdapter extends RecyclerView.Adapter {
 
     Context context;
 String[] names = {"Abra", "Cadabra", "Drowzy", "Charzard", "Picachu"};
-String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a Controller", "Pi Mirror"};
-
-    public ProjectListRecyclerAdapter(Context context){
+//String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a Controller", "Pi Mirror"};
+ArrayList<Project> projects;
+    public ProjectListRecyclerAdapter(Context context, ArrayList<Project> projects){
        this.context = context;
+       this.projects = projects;
    }
 
     @NonNull
@@ -33,6 +35,7 @@ String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a 
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
+        Project project = projects.get(i);
         ((CustomViewHolder)viewHolder).circleImageView.setImageResource(R.drawable.profile_image);
         ((CustomViewHolder)viewHolder).circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +44,9 @@ String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a 
 
             }
         });
-        ((CustomViewHolder)viewHolder).projectUser.setText(names[(int)(Math.random()*names.length)]);
-        ((CustomViewHolder)viewHolder).projectTitle.setText(projects[(int)(Math.random()*projects.length)]);
+        ((CustomViewHolder)viewHolder).projectUser.setText(project.getUser().getName());
+        ((CustomViewHolder)viewHolder).projectTitle.setText(project.getName());
+
         ((CustomViewHolder)viewHolder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +59,10 @@ String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a 
 
     @Override
     public int getItemCount() {
-        return 10;
+        if (projects.isEmpty())
+            return 0;
+        else
+            return projects.size();
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{

@@ -4,29 +4,25 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.Switch;
+import android.widget.Button;
+import android.widget.EditText;
 
 import ca.stclairconnect.pritchard.curtis.Objects.Profile;
 import ca.stclairconnect.pritchard.curtis.Objects.Project;
-import ca.stclairconnect.pritchard.curtis.Objects.Tag;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProjectsListFragment.OnFragmentInteractionListener} interface
+ * {@link AddProjectFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ProjectsListFragment#newInstance} factory method to
+ * Use the {@link AddProjectFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProjectsListFragment extends Fragment {
+public class AddProjectFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,7 +34,7 @@ public class ProjectsListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ProjectsListFragment() {
+    public AddProjectFragment() {
         // Required empty public constructor
     }
 
@@ -48,11 +44,11 @@ public class ProjectsListFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProjectsListFragment.
+     * @return A new instance of fragment AddProjectFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProjectsListFragment newInstance(String param1, String param2) {
-        ProjectsListFragment fragment = new ProjectsListFragment();
+    public static AddProjectFragment newInstance(String param1, String param2) {
+        AddProjectFragment fragment = new AddProjectFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,46 +66,20 @@ public class ProjectsListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_project_list, container, false);
-        DatabaseHelper db = new DatabaseHelper(getContext());
-
-        //        db.addProfile(new Profile("NameWorks","DescriptionWorks"));
-        //        db.addProject(new Project("NameWorks",1,"DescriptionWorks"));
-        //        db.addTag(new Tag("NameTagWorks"));
-
-
-
-        RecyclerView recyclerView = view.findViewById(R.id.recycler);
-        recyclerView.setAdapter(new ProjectListRecyclerAdapter(getContext(),db.getAllProjects()));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        final Switch global_local = view.findViewById(R.id.LocalGlobal);
-        final ImageView imageView = view.findViewById(R.id.DisplayListType);
-        final ImageView addButton = view.findViewById(R.id.add_profile);
-
-        global_local.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (global_local != null) {
-                    if (isChecked) {
-                        imageView.setImageResource(R.drawable.ic_person_black_24dp);
-                    }else{
-                        imageView.setImageResource(R.drawable.ic_group_black_24dp);
-                    }
-                }
-            }
-        });
-
-
-        addButton.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.fragment_add_project, container, false);
+        final EditText name = view.findViewById(R.id.name);
+        final EditText desc = view.findViewById(R.id.desc);
+        Button submit = view.findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content,new AddProjectFragment()).addToBackStack(null).commit();
+                DatabaseHelper db = new DatabaseHelper(getContext());
+                db.addProject(new Project(name.getText()+"",MainActivity.tempProfile, android.R.drawable.star_big_on,desc.getText()+""));
             }
         });
-
         return view;
     }
 

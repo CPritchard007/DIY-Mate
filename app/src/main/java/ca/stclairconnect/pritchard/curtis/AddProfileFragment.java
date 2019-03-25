@@ -116,7 +116,6 @@ public class AddProfileFragment extends Fragment {
                 if ( description.getText() != null){
                     desc = ""+description.getText();
                 }
-                db.addProfile(new Profile(user,desc));
             }
         });
 
