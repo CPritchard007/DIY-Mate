@@ -74,6 +74,7 @@ public class ProjectsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
+        MainActivity.navigation.setVisibility(View.VISIBLE);
         DatabaseHelper db = new DatabaseHelper(getContext());
 
         //        db.addProfile(new Profile("NameWorks","DescriptionWorks"));

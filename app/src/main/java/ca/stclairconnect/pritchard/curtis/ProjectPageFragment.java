@@ -67,6 +67,7 @@ public class ProjectPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_project_page, container, false);
+        MainActivity.navigation.setVisibility(View.VISIBLE);
         RecyclerView recyclerView = view.findViewById(R.id.itemList);
 
         ProjectRecyclerAdapter adapter = new ProjectRecyclerAdapter(getContext());

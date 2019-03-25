@@ -76,6 +76,7 @@ public class AddProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_profile, container, false);
+        MainActivity.navigation.setVisibility(View.VISIBLE);
         final FlowLayout flowLayout = view.findViewById(R.id.editFlowLayout);
         final EditText username = view.findViewById(R.id.edit_user);
         final EditText description = view.findViewById(R.id.description);

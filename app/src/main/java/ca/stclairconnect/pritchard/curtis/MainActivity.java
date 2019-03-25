@@ -8,18 +8,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import ca.stclairconnect.pritchard.curtis.Objects.Profile;
 
-public class MainActivity extends AppCompatActivity implements ProjectPageFragment.OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements  ProjectPageFragment.OnFragmentInteractionListener,
                                                                 ProjectsListFragment.OnFragmentInteractionListener,
                                                                 ProfileFragment.OnFragmentInteractionListener,
                                                                 AddProfileFragment.OnFragmentInteractionListener,
-                                                                AddProjectFragment.OnFragmentInteractionListener {
+                                                                AddProjectFragment.OnFragmentInteractionListener,
+                                                                LoginFragment.OnFragmentInteractionListener{
 
  public FragmentManager fm = getSupportFragmentManager();
 public static final Profile tempProfile = new Profile("tempName", android.R.drawable.ic_partial_secure,"tempDesc");
     public static Profile currentUser;
-private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    public static ArrayList<Profile> profiles;
+    public static BottomNavigationView navigation;
+    public BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -45,11 +50,15 @@ private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        profiles = new ArrayList<Profile>();
+    if (currentUser == null)
+        fm.beginTransaction().replace(R.id.content, new LoginFragment()).addToBackStack(null).commit();
+    else
         fm.beginTransaction().replace(R.id.content, new ProjectPageFragment()).addToBackStack(null).commit();
 
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
@@ -57,4 +66,6 @@ private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemS
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
 }

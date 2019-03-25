@@ -70,6 +70,7 @@ public class AddProjectFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_project, container, false);
+        MainActivity.navigation.setVisibility(View.VISIBLE);
         final EditText name = view.findViewById(R.id.name);
         final EditText desc = view.findViewById(R.id.desc);
         Button submit = view.findViewById(R.id.submit);
