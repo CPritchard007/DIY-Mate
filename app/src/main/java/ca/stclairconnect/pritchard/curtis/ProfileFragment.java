@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import ca.stclairconnect.pritchard.curtis.Objects.Profile;
 
@@ -66,8 +69,45 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
+        final FrameLayout content = view.findViewById(R.id.frame);
+        ImageView settings = view.findViewById(R.id.profileSettings);
+        LinearLayout logout = view.findViewById(R.id.logoutButton);
+        LinearLayout edit = view.findViewById(R.id.EditButton);
+        LinearLayout close = view.findViewById(R.id.CloseButton);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new AddProfileFragment()).commit();
+            }
+        });
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                content.setVisibility(View.VISIBLE);
+                System.out.println("hit settings");
+            }
+        });
+        content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                content.setVisibility(View.GONE);
+            }
+        });
         return view;
     }
 

@@ -36,7 +36,7 @@ ArrayList<Project> projects;
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         Project project = projects.get(i);
-        ((CustomViewHolder)viewHolder).circleImageView.setImageResource(R.drawable.profile_image);
+        ((CustomViewHolder)viewHolder).circleImageView.setImageResource(project.getUser().getImage());
         ((CustomViewHolder)viewHolder).circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +46,6 @@ ArrayList<Project> projects;
         });
         ((CustomViewHolder)viewHolder).projectUser.setText(project.getUser().getName());
         ((CustomViewHolder)viewHolder).projectTitle.setText(project.getName());
-
         ((CustomViewHolder)viewHolder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -82,41 +82,4 @@ public class Project {
         this.listItems = listItems;
     }
 
-
-    public class ListItem {
-        private String name;
-        private boolean active;
-        private String[] url;
-
-
-        public ListItem(String name, boolean active, String[] url) {
-            this.name = name;
-            this.active = active;
-            this.url = url;
-        }
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public boolean isActive() {
-            return active;
-        }
-
-        public void setActive(boolean active) {
-            this.active = active;
-        }
-
-        public String[] getUrl() {
-            return url;
-        }
-
-        public void setUrl(String[] url) {
-            this.url = url;
-        }
-
-    }
 }

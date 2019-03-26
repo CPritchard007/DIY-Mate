@@ -57,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public static final String PROFILE_TAGS_ID = "id";
-    public static final String PROFILE_TAGS_PRIFILE_ID = "profile_id";
+    public static final String PROFILE_TAGS_PROFILE_ID = "profile_id";
     public static final String PROFILE_TAGS_TAG_ID = "tag_id";
 
 
@@ -93,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_PROFILE_TAGS_TABLE = "CREATE TABLE `" + TABLE_PROFILE_TAGS + "` ("+
             PROFILE_TAGS_ID + " INTEGER NOT NULL," +
-            PROFILE_TAGS_PRIFILE_ID + " INT NOT NULL," +
+            PROFILE_TAGS_PROFILE_ID + " INT NOT NULL," +
             PROFILE_TAGS_TAG_ID + " INT NOT NULL" +
             ")";
 
@@ -108,6 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         System.out.println(CREATE_TAGS_TABLE);
         System.out.println(CREATE_PROFILE_TAGS_TABLE);
         System.out.println(CREATE_PROJECT_LIST_ITEM_TABLE);
+//        addTag(new Tag("name"),);
     }
 
     @Override
@@ -208,8 +209,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //MARK: Tags
 
+
+
+    public void profileTagForeignKey(Profile profile, Tag tag){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PROFILE_TAGS_PROFILE_ID,profile.getId());
+        values.put(PROFILE_TAGS_TAG_ID, tag.getId());
+        db.insert(TABLE_PROFILE_TAGS,null,values);
+    }
+
+    //MARK: Tags
     public ArrayList<Tag> getAllTags(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Tag> tags = new ArrayList<Tag>();
@@ -238,13 +249,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return tag;
     }
 
-    public void addTag(Tag tag){
+    public void addTag(Tag tag, Profile profile){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TAGS_COLUMN_ID, tag.getId());
         values.put(TAGS_COLUMN_NAME, tag.getName());
         db.insert(TABLE_TAGS, null, values);
+        profileTagForeignKey(profile,tag);
         db.close();
 
+    }
+
+    public void projectItemForeignKey(Project project, ListItem listItem){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PROJECT_LIST_PROJECT_ID,project.getId());
+        values.put(PROJECT_LIST_ITEMLIST_ID, listItem.getId());
+        db.insert(TABLE_PROJECT_LISTITEM,null,values);
     }
 }

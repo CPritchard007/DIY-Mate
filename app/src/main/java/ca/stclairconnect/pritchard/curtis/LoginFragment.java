@@ -89,6 +89,7 @@ public class LoginFragment extends Fragment {
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseHelper db = new DatabaseHelper(getContext());
                 if (ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
 
                     if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE))
@@ -119,6 +120,7 @@ public class LoginFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+
             }
         });
         ImageView submit = view.findViewById(R.id.submit);

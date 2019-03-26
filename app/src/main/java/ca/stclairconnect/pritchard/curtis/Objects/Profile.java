@@ -38,6 +38,7 @@ public class Profile {
     }
 
     public Profile(String name, int image, String description) {
+
         this.name = name;
         this.image = image;
         this.tags = null;
