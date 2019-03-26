@@ -29,6 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public static final String PROFILE_COLUMN_ID = "id";
     public static final String PROFILE_COLUMN_NAME = "name";
+    public static final String PROFILE_COLUMN_IMAGE = "image";
     public static final String PROFILE_COLUMN_DESCRIPTION = "description";
 
     /*
@@ -64,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_PROFILE_TABLE = "CREATE TABLE `" + TABLE_PROFILE + "` (" +
             PROFILE_COLUMN_ID + " INTEGER PRIMARY KEY," +
             PROFILE_COLUMN_NAME + " VARCHAR(100) NOT NULL," +
+            PROFILE_COLUMN_IMAGE + " INT NOT NULL,"+
             PROFILE_COLUMN_DESCRIPTION + " TEXT DEFAULT NULL)";
 
     public static final String CREATE_PROJECT_TABLE = "CREATE TABLE `" + TABLE_PROJECT + "` (" +
@@ -143,7 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Profile getProfile(int id){
         SQLiteDatabase db = this.getReadableDatabase();
         Profile profile = null;
-        Cursor cursor = db.query(TABLE_PROFILE,new String[]{PROFILE_COLUMN_ID,PROFILE_COLUMN_NAME,PROFILE_COLUMN_DESCRIPTION},PROFILE_COLUMN_ID + "=?",
+        Cursor cursor = db.query(TABLE_PROFILE,new String[]{PROFILE_COLUMN_ID,PROFILE_COLUMN_NAME,PROFILE_COLUMN_IMAGE,PROFILE_COLUMN_DESCRIPTION},PROFILE_COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)},null,null,null);
         if (cursor != null){
             cursor.moveToFirst();
@@ -159,6 +161,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PROFILE_COLUMN_NAME, profile.getName());
+        values.put(PROFILE_COLUMN_IMAGE, profile.getImage());
         values.put(PROFILE_COLUMN_DESCRIPTION, profile.getDescription());
         db.insert(TABLE_PROFILE, null, values);
         db.close();

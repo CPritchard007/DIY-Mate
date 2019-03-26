@@ -129,8 +129,8 @@ public class LoginFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                MainActivity.profiles.add(new Profile(name.getText()+"",0,description.getText()+""));
+                DatabaseHelper db = new DatabaseHelper(getContext());
+                db.addProfile(new Profile(name.getText()+"",0,description.getText()+""));
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
             }
         });

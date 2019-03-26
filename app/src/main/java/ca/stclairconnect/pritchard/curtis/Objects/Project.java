@@ -82,4 +82,8 @@ public class Project {
         this.listItems = listItems;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

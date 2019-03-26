@@ -17,7 +17,8 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
                                                                 ProfileFragment.OnFragmentInteractionListener,
                                                                 AddProfileFragment.OnFragmentInteractionListener,
                                                                 AddProjectFragment.OnFragmentInteractionListener,
-                                                                LoginFragment.OnFragmentInteractionListener{
+                                                                LoginFragment.OnFragmentInteractionListener,
+                                                                SelectProfileFragment.OnFragmentInteractionListener{
 
  public FragmentManager fm = getSupportFragmentManager();
 public static final Profile tempProfile = new Profile("tempName", android.R.drawable.ic_partial_secure,"tempDesc");
@@ -52,15 +53,15 @@ public static final Profile tempProfile = new Profile("tempName", android.R.draw
         setContentView(R.layout.activity_main);
         profiles = new ArrayList<Profile>();
     if (currentUser == null)
-        fm.beginTransaction().replace(R.id.content, new LoginFragment()).addToBackStack(null).commit();
+        fm.beginTransaction().replace(R.id.content, new SelectProfileFragment()).addToBackStack(null).commit();
     else
         fm.beginTransaction().replace(R.id.content, new ProjectPageFragment()).addToBackStack(null).commit();
-
 
          navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
