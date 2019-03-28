@@ -117,6 +117,9 @@ public class AddProfileFragment extends Fragment {
                 if ( description.getText() != null){
                     desc = ""+description.getText();
                 }
+                Profile newProfile = new Profile(user,R.drawable.list_background,desc);
+                db.addProfile(newProfile);
+                MainActivity.currentUser = newProfile;
             }
         });
 

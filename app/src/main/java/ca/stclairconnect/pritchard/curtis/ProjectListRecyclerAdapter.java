@@ -44,7 +44,7 @@ ArrayList<Project> projects;
 
             }
         });
-        ((CustomViewHolder)viewHolder).projectUser.setText(project.getUser().getName());
+        ((CustomViewHolder)viewHolder).projectUser.setText("bob");
         ((CustomViewHolder)viewHolder).projectTitle.setText(project.getName());
         ((CustomViewHolder)viewHolder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
