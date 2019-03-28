@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import ca.stclairconnect.pritchard.curtis.Objects.Profile;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -77,6 +79,19 @@ public class ProfileFragment extends Fragment {
         LinearLayout logout = view.findViewById(R.id.logoutButton);
         LinearLayout edit = view.findViewById(R.id.EditButton);
         LinearLayout close = view.findViewById(R.id.CloseButton);
+        TextView user = view.findViewById(R.id.name);
+        TextView desc = view.findViewById(R.id.description);
+        CircleImageView imageView = view.findViewById(R.id.profile);
+        Profile currentUser = MainActivity.currentUser;
+        if(currentUser !=null) {
+            user.setText(currentUser.getName());
+            desc.setText(currentUser.getDescription());
+            imageView.setImageResource(currentUser.getImage());
+
+        }
+
+
+
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +102,7 @@ public class ProfileFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new SelectProfileFragment()).commit()
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new SelectProfileFragment()).commit();
             }
         });
         close.setOnClickListener(new View.OnClickListener() {

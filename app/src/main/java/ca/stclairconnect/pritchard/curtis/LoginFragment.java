@@ -86,43 +86,46 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         MainActivity.navigation.setVisibility(View.GONE);
         CircleImageView circleImageView = view.findViewById(R.id.profileImage);
-        circleImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatabaseHelper db = new DatabaseHelper(getContext());
-                if (ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                    {
-                        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                        alertDialog.setTitle("Camera Permission");
-                        alertDialog.setMessage("We need access to external read and write permissions to use the camera");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                alertDialog.dismiss();
-
-                                ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_LABEL);
-                            }
-                        });
-                        alertDialog.show();
-
-                    }else{
-                        ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_LABEL);
-                    }
 
 
-                }else{
-                    File pic = null;
-                    try {
-                        pic = createTempImageLocation();
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
+//        circleImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DatabaseHelper db = new DatabaseHelper(getContext());
+//                if (ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+//
+//                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE))
+//                    {
+//                        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+//                        alertDialog.setTitle("Camera Permission");
+//                        alertDialog.setMessage("We need access to external read and write permissions to use the camera");
+//                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                alertDialog.dismiss();
+//
+//                                ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_LABEL);
+//                            }
+//                        });
+//                        alertDialog.show();
+//
+//                    }else{
+//                        ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_LABEL);
+//                    }
+//
+//
+//                }else{
+//                    File pic = null;
+//                    try {
+//                        pic = createTempImageLocation();
+//                    }catch (IOException e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//            }
+//        });
 
-            }
-        });
         ImageView submit = view.findViewById(R.id.submit);
         final EditText name = view.findViewById(R.id.name);
         final EditText description = view.findViewById(R.id.description);

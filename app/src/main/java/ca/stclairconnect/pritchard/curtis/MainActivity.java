@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
                                                                 AddProfileFragment.OnFragmentInteractionListener,
                                                                 AddProjectFragment.OnFragmentInteractionListener,
                                                                 LoginFragment.OnFragmentInteractionListener,
+                                                                ProfileListFragment.OnFragmentInteractionListener,
                                                                 SelectProfileFragment.OnFragmentInteractionListener{
 
  public FragmentManager fm = getSupportFragmentManager();
@@ -37,6 +40,7 @@ public static final Profile tempProfile = new Profile("tempName", android.R.draw
                     fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_insert:
+                    fm.beginTransaction().replace(R.id.content,new ProfileListFragment()).addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_profile:
                     fm.beginTransaction().replace(R.id.content, new ProfileFragment()).addToBackStack(null).commit();
@@ -53,10 +57,11 @@ public static final Profile tempProfile = new Profile("tempName", android.R.draw
         setContentView(R.layout.activity_main);
         profiles = new ArrayList<Profile>();
         DatabaseHelper db = new DatabaseHelper(getBaseContext());
-    if (currentUser == null && db.getAllProfiles().isEmpty())
+    if (currentUser == null && db.getAllProfiles().size()>0)
         fm.beginTransaction().replace(R.id.content, new SelectProfileFragment()).addToBackStack(null).commit();
     else if (currentUser == null)
         fm.beginTransaction().replace(R.id.content, new LoginFragment()).addToBackStack(null).commit();
+
     else
         fm.beginTransaction().replace(R.id.content, new ProjectPageFragment()).addToBackStack(null).commit();
 
