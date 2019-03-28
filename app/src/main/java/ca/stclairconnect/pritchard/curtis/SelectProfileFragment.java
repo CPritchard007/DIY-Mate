@@ -73,14 +73,22 @@ public class SelectProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_select_profile, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
         DatabaseHelper db = new DatabaseHelper(getContext());
-        Spinner spinner = view.findViewById(R.id.menu);
+        final Spinner spinner = view.findViewById(R.id.menu);
         ArrayAdapter adapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_dropdown_item, db.getAllProfiles());
         spinner.setAdapter(adapter);
         Button add = view.findViewById(R.id.AddProfile);
+        Button submit = view.findViewById(R.id.submit);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new LoginFragment()).addToBackStack(null).commit();
+            }
+        });
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseHelper db = new DatabaseHelper(getContext());
+                MainActivity.currentUser = (Profile) spinner.getSelectedItem();
             }
         });
         return view;

@@ -1,5 +1,6 @@
 package ca.stclairconnect.pritchard.curtis;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -86,7 +87,7 @@ public class ProfileFragment extends Fragment {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new SelectProfileFragment()).commit()
             }
         });
         close.setOnClickListener(new View.OnClickListener() {

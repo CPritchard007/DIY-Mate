@@ -78,6 +78,7 @@ public class AddProjectFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DatabaseHelper db = new DatabaseHelper(getContext());
+                System.out.println(MainActivity.currentUser.getName());
                 db.addProject(new Project(name.getText()+"",MainActivity.currentUser, android.R.drawable.star_big_on,desc.getText()+""));
             }
         });

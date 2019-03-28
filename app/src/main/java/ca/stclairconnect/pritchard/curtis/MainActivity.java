@@ -52,8 +52,11 @@ public static final Profile tempProfile = new Profile("tempName", android.R.draw
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         profiles = new ArrayList<Profile>();
-    if (currentUser == null)
+        DatabaseHelper db = new DatabaseHelper(getBaseContext());
+    if (currentUser == null && db.getAllProfiles().isEmpty())
         fm.beginTransaction().replace(R.id.content, new SelectProfileFragment()).addToBackStack(null).commit();
+    else if (currentUser == null)
+        fm.beginTransaction().replace(R.id.content, new LoginFragment()).addToBackStack(null).commit();
     else
         fm.beginTransaction().replace(R.id.content, new ProjectPageFragment()).addToBackStack(null).commit();
 
