@@ -133,7 +133,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DatabaseHelper db = new DatabaseHelper(getContext());
-                db.addProfile(new Profile(name.getText()+"",0,description.getText()+""));
+                db.addProfile(new Profile(name.getText()+"",0,description.getText()+"",true));
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
             }
         });

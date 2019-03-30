@@ -12,7 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nex3z.flowlayout.FlowLayout;
+
+import java.util.ArrayList;
+
 import ca.stclairconnect.pritchard.curtis.Objects.Profile;
+import ca.stclairconnect.pritchard.curtis.Objects.Tag;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -71,6 +76,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        DatabaseHelper db = new DatabaseHelper(getContext());
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
         final FrameLayout content = view.findViewById(R.id.frame);
@@ -78,6 +84,7 @@ public class ProfileFragment extends Fragment {
         LinearLayout logout = view.findViewById(R.id.logoutButton);
         LinearLayout edit = view.findViewById(R.id.EditButton);
         LinearLayout close = view.findViewById(R.id.CloseButton);
+        FlowLayout flowLayout = view.findViewById(R.id.tagView);
         TextView user = view.findViewById(R.id.name);
         TextView desc = view.findViewById(R.id.description);
         CircleImageView imageView = view.findViewById(R.id.profile);
@@ -95,7 +102,7 @@ public class ProfileFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new AddProfileFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new SelectProfileFragment()).commit();
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {

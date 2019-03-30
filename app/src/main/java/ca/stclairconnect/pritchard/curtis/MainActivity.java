@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
                                                                 SelectProfileFragment.OnFragmentInteractionListener{
 
  public FragmentManager fm = getSupportFragmentManager();
-public static final Profile tempProfile = new Profile("tempName", android.R.drawable.ic_partial_secure,"tempDesc");
     public static Profile currentUser;
     public static ArrayList<Profile> profiles;
     public static BottomNavigationView navigation;
