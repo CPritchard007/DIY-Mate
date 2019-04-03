@@ -1,24 +1,33 @@
 package ca.stclairconnect.pritchard.curtis;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.nex3z.flowlayout.FlowLayout;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.stclairconnect.pritchard.curtis.Objects.ListItem;
 import ca.stclairconnect.pritchard.curtis.Objects.Profile;
+import ca.stclairconnect.pritchard.curtis.Objects.Tag;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +42,12 @@ public class AddProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private String imageLocation;
+
+    public static final int CAMERA_PERMISSION_LABEL = 1;
+    public static final int CAMERA_INTENT_LABEL = 2;
+
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -76,34 +91,33 @@ public class AddProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_profile, container, false);
-        MainActivity.navigation.setVisibility(View.VISIBLE);
-        final FlowLayout flowLayout = view.findViewById(R.id.editFlowLayout);
+        MainActivity.navigation.setVisibility(View.INVISIBLE);
+        final List<String> TagList = new ArrayList();
         final EditText username = view.findViewById(R.id.edit_user);
         final EditText description = view.findViewById(R.id.description);
-        TextView add = view.findViewById(R.id.add);
-        add.setOnClickListener(new View.OnClickListener() {
+        final EditText tagInput = view.findViewById(R.id.tagText);
+        final CircleImageView circleImageView = view.findViewById(R.id.edit_profile);
+        Button tagSubmit = view.findViewById(R.id.tagSubmit);
+        final ListView listView = view.findViewById(R.id.tagList);
+
+        circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                /**
-                 * android:paddingLeft="10dp"
-                 * android:paddingTop="2dp"
-                 * android:paddingRight="10dp"
-                 * android:paddingBottom="4dp"
-                 * android:text="Template"
-                 * android:textColor="#ffff"
-                 * android:textStyle="bold"
-                 */
-                TextView editText = new TextView(getContext());
-                editText.setHeight(10);
-                editText.setText("blank");
-                editText.setWidth(50);
-                editText.setHeight(50);
-                editText.setBackgroundResource(R.drawable.tag_case);
-                editText.setPadding(30,30,30,30);
-                flowLayout.addView(editText);
             }
         });
+        tagSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tag = tagInput.getText() + "";
+                TagList.add(tag);
+                tagInput.setText("");
+            }
+        });
+
+
+
+
         Button submit = view.findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,17 +125,36 @@ public class AddProfileFragment extends Fragment {
                 String user = null;
                 String desc = null;
                 DatabaseHelper db = new DatabaseHelper(getContext());
-                if (username.getText() != null){
+                if (username.getText()+"" != ""){
                     user = ""+username.getText();
-                }
-                if ( description.getText() != null){
-                    desc = ""+description.getText();
+
+                    if ( description.getText()+"" != "") {
+                    desc = "" + description.getText();
+
+                    Profile newProfile = new Profile(user, R.drawable.profile_image, desc,true);
+                    int userId = db.addProfile(newProfile);
+                    newProfile.setId(userId);
+                    MainActivity.currentUser = newProfile;
+                    System.out.println("[SOUT]=> ADDED CURRENT USER: " + MainActivity.currentUser.getName());
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
+                        for (int i = 0; i < TagList.size(); i++) {
+                            int tagId = db.addTag(new Tag(TagList.get(i)), MainActivity.currentUser);
+                            db.profileTagForeignKey(newProfile.getId(), tagId);
+                        }
+                    }
                 }
             }
         });
 
+
+
+        listView.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,TagList));
+
+
         return view;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

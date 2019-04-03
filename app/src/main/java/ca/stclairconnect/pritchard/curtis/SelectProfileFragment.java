@@ -73,14 +73,23 @@ public class SelectProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_select_profile, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
         DatabaseHelper db = new DatabaseHelper(getContext());
-        Spinner spinner = view.findViewById(R.id.menu);
+        final Spinner spinner = view.findViewById(R.id.menu);
         ArrayAdapter adapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_dropdown_item, db.getAllProfiles());
         spinner.setAdapter(adapter);
+        spinner.setSelection(spinner.getLastVisiblePosition());
         Button add = view.findViewById(R.id.AddProfile);
+        Button submit = view.findViewById(R.id.submitProfile);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.currentUser =(Profile) spinner.getSelectedItem();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new ProfileFragment()).addToBackStack(null).commit();
+            }
+        });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new LoginFragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new AddProfileFragment()).addToBackStack(null).commit();
             }
         });
         return view;

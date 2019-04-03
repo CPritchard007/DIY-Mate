@@ -18,10 +18,10 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
                                                                 AddProfileFragment.OnFragmentInteractionListener,
                                                                 AddProjectFragment.OnFragmentInteractionListener,
                                                                 LoginFragment.OnFragmentInteractionListener,
+                                                                ProfileListFragment.OnFragmentInteractionListener,
                                                                 SelectProfileFragment.OnFragmentInteractionListener{
 
  public FragmentManager fm = getSupportFragmentManager();
-public static final Profile tempProfile = new Profile("tempName", android.R.drawable.ic_partial_secure,"tempDesc");
     public static Profile currentUser;
     public static ArrayList<Profile> profiles;
     public static BottomNavigationView navigation;
@@ -37,6 +37,7 @@ public static final Profile tempProfile = new Profile("tempName", android.R.draw
                     fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_insert:
+                    fm.beginTransaction().replace(R.id.content,new ProfileListFragment()).addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_profile:
                     fm.beginTransaction().replace(R.id.content, new ProfileFragment()).addToBackStack(null).commit();
@@ -52,8 +53,8 @@ public static final Profile tempProfile = new Profile("tempName", android.R.draw
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         profiles = new ArrayList<Profile>();
-    if (currentUser == null)
-        fm.beginTransaction().replace(R.id.content, new SelectProfileFragment()).addToBackStack(null).commit();
+    if (currentUser==null)
+        fm.beginTransaction().replace(R.id.content, new AddProfileFragment()).addToBackStack(null).commit();
     else
         fm.beginTransaction().replace(R.id.content, new ProjectPageFragment()).addToBackStack(null).commit();
 

@@ -7,29 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.nex3z.flowlayout.FlowLayout;
-
-import java.util.ArrayList;
-
-import ca.stclairconnect.pritchard.curtis.Objects.Profile;
-import ca.stclairconnect.pritchard.curtis.Objects.Tag;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
+ * {@link ProfileListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
+ * Use the {@link ProfileListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,7 +29,7 @@ public class ProfileFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ProfileFragment() {
+    public ProfileListFragment() {
         // Required empty public constructor
     }
 
@@ -51,11 +39,11 @@ public class ProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
+     * @return A new instance of fragment ProfileListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
+    public static ProfileListFragment newInstance(String param1, String param2) {
+        ProfileListFragment fragment = new ProfileListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -76,61 +64,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        DatabaseHelper db = new DatabaseHelper(getContext());
-        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        MainActivity.navigation.setVisibility(View.VISIBLE);
-        final FrameLayout content = view.findViewById(R.id.frame);
-        ImageView settings = view.findViewById(R.id.profileSettings);
-        LinearLayout logout = view.findViewById(R.id.logoutButton);
-        LinearLayout edit = view.findViewById(R.id.EditButton);
-        LinearLayout close = view.findViewById(R.id.CloseButton);
-        FlowLayout flowLayout = view.findViewById(R.id.tagView);
-        TextView user = view.findViewById(R.id.name);
-        TextView desc = view.findViewById(R.id.description);
-        CircleImageView imageView = view.findViewById(R.id.profile);
-        Profile currentUser = MainActivity.currentUser;
-        if(currentUser !=null) {
-            user.setText(currentUser.getName());
-            desc.setText(currentUser.getDescription());
-            imageView.setImageResource(currentUser.getImage());
-
-        }
-
-
-
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new SelectProfileFragment()).commit();
-            }
-        });
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                content.setVisibility(View.VISIBLE);
-                System.out.println("hit settings");
-            }
-        });
-        content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                content.setVisibility(View.GONE);
-            }
-        });
-        return view;
+        return inflater.inflate(R.layout.fragment_profile_list, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

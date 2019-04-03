@@ -6,6 +6,9 @@ public class Profile {
     private int image;
     private String[] tags;
     private String description;
+    private Boolean active;
+
+
 
     /**
      * Class of profiles to be linked to the Database
@@ -14,22 +17,24 @@ public class Profile {
      * @param id
      * @param name
      * @param tags
+     * @param image
      * @param description
+     * @param active
      */
-    public Profile(int id, String name, int image, String[] tags, String description) {
+    public Profile(int id, String name, int image, String[] tags, String description, Boolean active) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.tags = tags;
         this.description = description;
     }
-    public Profile( String name, int image, String[] tags, String description) {
+    public Profile( String name, int image, String[] tags, String description, Boolean active) {
         this.name = name;
         this.image = image;
         this.tags = tags;
         this.description = description;
     }
-    public Profile(int id, String name, int image, String description) {
+    public Profile(int id, String name, int image, String description, Boolean active) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -37,8 +42,7 @@ public class Profile {
         this.description = description;
     }
 
-    public Profile(String name, int image, String description) {
-
+    public Profile(String name, int image, String description, Boolean active) {
         this.name = name;
         this.image = image;
         this.tags = null;
@@ -84,5 +88,15 @@ public class Profile {
         this.description = description;
     }
 
+    public Boolean isActive() {
+        return active;
+    }
 
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+    @Override
+    public String toString() {
+        return name;
+    }
 }
