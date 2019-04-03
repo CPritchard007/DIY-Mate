@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import ca.stclairconnect.pritchard.curtis.Objects.Profile;
 import ca.stclairconnect.pritchard.curtis.Objects.Project;
 
 
@@ -78,7 +77,7 @@ public class AddProjectFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DatabaseHelper db = new DatabaseHelper(getContext());
-                db.addProject(new Project(name.getText()+"",MainActivity.currentUser, android.R.drawable.star_big_on,desc.getText()+""));
+                db.addProject(new Project(name.getText()+"", android.R.drawable.star_big_on,desc.getText()+""));
             }
         });
         return view;

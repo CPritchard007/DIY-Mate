@@ -6,23 +6,20 @@ public class Project {
     private int id;
     private int image;
     private String name;
-    private Profile user;
     private String description;
     private int[] gallery;
     private ArrayList<ListItem> listItems;
 
-    public Project(int id, String name, Profile user, int image, String description) {
+    public Project(int id, String name, int image, String description) {
         this.id = id;
         this.image = image;
         this.name = name;
-        this.user = user;
         this.description = description;
 
     }
-    public Project(String name, Profile user, int image,  String description) {
+    public Project(String name, int image,  String description) {
         this.image = image;
         this.name = name;
-        this.user = user;
         this.description = description;
 
     }
@@ -48,14 +45,6 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setUser(Profile user) {
-        this.user = user;
-    }
-
-    public Profile getUser() {
-        return user;
     }
 
     public String getDescription() {

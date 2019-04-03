@@ -3,12 +3,22 @@ package ca.stclairconnect.pritchard.curtis;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import ca.stclairconnect.pritchard.curtis.Objects.Contributor;
+import ca.stclairconnect.pritchard.curtis.Objects.ListItem;
 
 
 /**
@@ -68,12 +78,123 @@ public class ProjectPageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_project_page, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
-        RecyclerView recyclerView = view.findViewById(R.id.itemList);
 
-        ProjectRecyclerAdapter adapter = new ProjectRecyclerAdapter(getContext());
-        recyclerView.setAdapter(adapter);
+        final RecyclerView recyclerView = view.findViewById(R.id.itemList);
+
+
+        final ArrayList<ListItem> listItems = new ArrayList<ListItem>();
+    final ArrayList<Contributor> contributors = new ArrayList<Contributor>();
+
+
+        listItems.add(new ListItem("This is the name",true));
+        contributors.add(new Contributor("Darrec","his name is Darrec", R.drawable.ic_launcher_round,"healer"));
+        DatabaseHelper db = new DatabaseHelper(getContext());
+        final ProjectRecyclerAdapter[] adapter = {new ProjectRecyclerAdapter(getContext(), listItems)};
+        recyclerView.setAdapter(adapter[0]);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        final ConstraintLayout alertLayer = view.findViewById(R.id.alertLayer);
+
+
+
+        final ConstraintLayout contributorLayout = view.findViewById(R.id.contributorLayer);
+
+        final EditText contributorName = view.findViewById(R.id.contributorName);
+        final EditText contributorPosition = view.findViewById(R.id.contributorPosition);
+
+        TextView AddButton  = view.findViewById(R.id.add_list);
+
+        final TextView errorList = view.findViewById(R.id.errorText_items);
+        final TextView errorContributors = view.findViewById(R.id.errorText_contributors);
+        errorContributors.setVisibility(View.GONE);
+        errorList.setVisibility(View.GONE);
+
+        AddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertLayer.setVisibility(View.VISIBLE);
+            }
+        });
+
+        alertLayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertLayer.setVisibility(View.GONE);
+            }
+        });
+
+        final EditText itemName = view.findViewById(R.id.itemName);
+
+        final CheckBox itemIsComplete = view.findViewById(R.id.itemActivity);
+
+        Button listItemSubmit = view.findViewById(R.id.listItemSubmit);
+        if(itemName.getText()+"" != "") {
+            listItemSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    errorList.setVisibility(View.GONE);
+                    listItems.add(new ListItem(itemName.getText() + "", itemIsComplete.isChecked()));
+
+                    itemName.setText("");
+                    itemIsComplete.setChecked(false);
+
+                    alertLayer.setVisibility(View.INVISIBLE);
+                    System.out.println(itemIsComplete.isChecked());
+                    adapter[0] = new ProjectRecyclerAdapter(getContext(), listItems);
+                    recyclerView.setAdapter(adapter[0]);
+
+                }
+            });
+        }else{
+            errorList.setVisibility(View.VISIBLE);
+        }
+
+
+
+        final RecyclerView contributorView = view.findViewById(R.id.contributor);
+        ProjectContributerRecyclerAdapter adapter1 = new ProjectContributerRecyclerAdapter(getContext(), contributors);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,true);
+        contributorView.setLayoutManager(manager);
+
+        contributorView.setAdapter(adapter1);
+
+
+
+
+        TextView addContributor = view.findViewById(R.id.add_contributers);
+
+
+
+        addContributor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contributorLayout.setVisibility(View.VISIBLE);
+
+            }
+        });
+        contributorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contributorLayout.setVisibility(View.GONE);
+            }
+        });
+
+
+
+        if (contributorName.getText()+"" != "" && contributorPosition.getText()+"" != "") {
+            addContributor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    errorContributors.setVisibility(View.GONE);
+                    contributors.add(new Contributor(contributorName.getText()+"","",R.drawable.ic_launcher_round,contributorPosition.getText()+""));
+                    contributorView.setAdapter(new ProjectContributerRecyclerAdapter(getContext(),contributors));
+                    contributorName.setText("");
+                    contributorPosition.setText("");
+                }
+            });
+        }else{
+            errorContributors.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
