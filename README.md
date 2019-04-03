@@ -1,3 +1,5 @@
+
+![Logo](https://github.com/CPritchard007/DIY-Mate/blob/revision/app/src/main/res/drawable/ic_launcher_round.png)
 # DIY-Mate
 
 ## THE PROFILE PAGE
