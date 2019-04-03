@@ -13,10 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 
-import ca.stclairconnect.pritchard.curtis.Objects.Profile;
-import ca.stclairconnect.pritchard.curtis.Objects.Project;
-import ca.stclairconnect.pritchard.curtis.Objects.Tag;
-
 
 /**
  * A simple {@link Fragment} subclass.

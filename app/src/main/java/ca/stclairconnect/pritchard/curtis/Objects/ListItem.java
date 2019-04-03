@@ -4,19 +4,19 @@ public class ListItem {
     private int id;
     private String name;
     private boolean active;
-    private String[] url;
 
 
-    public ListItem(String name, boolean active, String[] url) {
+
+    public ListItem(String name, boolean active) {
         this.name = name;
         this.active = active;
-        this.url = url;
+
     }
-    public ListItem(int id, String name, boolean active, String[] url) {
+    public ListItem(int id, String name, boolean active) {
         this.id = id;
         this.name = name;
         this.active = active;
-        this.url = url;
+
     }
 
     public int getId() {
@@ -43,12 +43,5 @@ public class ListItem {
         this.active = active;
     }
 
-    public String[] getUrl() {
-        return url;
-    }
-
-    public void setUrl(String[] url) {
-        this.url = url;
-    }
 
 }
