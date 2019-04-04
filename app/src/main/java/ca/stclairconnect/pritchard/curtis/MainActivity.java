@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
 
 
 
-        fm.beginTransaction().replace(R.id.content, new ProjectPageFragment()).addToBackStack(null).commit();
+        fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
 
          navigation = (BottomNavigationView) findViewById(R.id.navigation);
 

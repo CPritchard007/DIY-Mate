@@ -3,6 +3,7 @@ package ca.stclairconnect.pritchard.curtis;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -72,6 +73,7 @@ public class ProjectsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_project_list, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
         DatabaseHelper db = new DatabaseHelper(getContext());
+        ConstraintLayout content = view.findViewById(R.id.itemList);
 
         //        db.addProfile(new Profile("NameWorks","DescriptionWorks"));
         //        db.addProject(new Project("NameWorks",1,"DescriptionWorks"));
@@ -98,6 +100,8 @@ public class ProjectsListFragment extends Fragment {
                 }
             }
         });
+
+
 
 
         addButton.setOnClickListener(new View.OnClickListener() {
