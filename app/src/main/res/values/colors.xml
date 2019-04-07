@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6DA6E3</color>
-    <color name="colorPrimaryDark">#345679</color>
+    <color name="colorPrimary">#eb95ff</color>
+    <color name="colorPrimaryDark">#8435b0</color>
     <color name="colorAccent">#B765E3</color>
-    <color name="colorBright">#F2F2F2</color>
+    <color name="colorBright">#FFFFFF</color>
     <color name="backFade">#78000000</color>
     <color name="errorColor">#FA3030</color>
 </resources>
