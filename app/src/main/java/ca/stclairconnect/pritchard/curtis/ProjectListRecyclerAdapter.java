@@ -1,7 +1,12 @@
 package ca.stclairconnect.pritchard.curtis;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Constraints;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,18 +19,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ca.stclairconnect.pritchard.curtis.Objects.Project;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProjectListRecyclerAdapter extends RecyclerView.Adapter {
 
     Context context;
-    FragmentManager fm;
+    Activity activity;
 String[] names = {"Abra", "Cadabra", "Drowzy", "Charzard", "Picachu"};
 //String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a Controller", "Pi Mirror"};
 ArrayList<Project> projects;
-    public ProjectListRecyclerAdapter(Context context, ArrayList<Project> projects){
+    public ProjectListRecyclerAdapter(Context context, ArrayList<Project> projects, Activity activity){
        this.context = context;
        this.projects = projects;
-       this.fm = fm;
+       this.activity= activity;
    }
 
     @NonNull
@@ -39,21 +45,16 @@ ArrayList<Project> projects;
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         final Project project = projects.get(i);
-        ((CustomViewHolder)viewHolder).circleImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Move the user to the Profile of this user
-                ProjectPageFragment.newInstance(project.getId());
-            }
-        });
+        ((CustomViewHolder)viewHolder).circleImageView.setImageResource(project.getImage());
         ((CustomViewHolder)viewHolder).projectTitle.setText(project.getName());
-        ((CustomViewHolder)viewHolder).cardView.setOnClickListener(new View.OnClickListener() {
+        ((CustomViewHolder)viewHolder).projectDescription.setText(project.getDescription());
+        ((CustomViewHolder)viewHolder).content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Move the user to the applications project
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.content, ProjectPageFragment.newInstance(project.getId())).addToBackStack(null).commit();
+                    System.out.println("----------------------------------------------");
             }
         });
-
 
 
     }
@@ -68,14 +69,15 @@ ArrayList<Project> projects;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
         TextView projectTitle;
-        TextView projectUser;
-        ImageView circleImageView;
-        CardView cardView;
+        TextView projectDescription;
+        CircleImageView circleImageView;
+        ConstraintLayout content;
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             projectTitle = itemView.findViewById(R.id.projectTitle);
+            projectDescription = itemView.findViewById(R.id.projectDescription);
             circleImageView = itemView.findViewById(R.id.imageView);
-            cardView = itemView.findViewById(R.id.itemList);
+            content = itemView.findViewById(R.id.listItem);
         }
 
     }

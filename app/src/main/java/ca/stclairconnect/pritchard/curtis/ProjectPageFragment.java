@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class ProjectPageFragment extends Fragment {
 
 
         final ArrayList<ListItem> listItems = new ArrayList<ListItem>();
-    final ArrayList<Contributor> contributors = new ArrayList<Contributor>();
+        final ArrayList<Contributor> contributors = new ArrayList<Contributor>();
 
 
         listItems.add(new ListItem("This is the name",true));
@@ -88,16 +89,21 @@ public class ProjectPageFragment extends Fragment {
 
         DatabaseHelper db = new DatabaseHelper(getContext());
 
-        Project project = db.getProject(mParam1);
 
-        TextView projectName = view.findViewById(R.id.projectTitle);
+        Project project = db.getProject(mParam1);
+        System.out.println(project.getName());
+
+        ImageView header = view.findViewById(R.id.header);
+        header.setImageResource(project.getImage());
+
+        TextView projectName = view.findViewById(R.id.title);
         projectName.setText(project.getName());
         TextView projectDescription = view.findViewById(R.id.description);
         projectDescription.setText(project.getDescription());
-        final ProjectRecyclerAdapter[] adapter = {new ProjectRecyclerAdapter(getContext(), listItems)};
 
-        recyclerView.setAdapter(adapter[0]);
+        recyclerView.setAdapter(new ProjectRecyclerAdapter(getContext(), listItems));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         final ConstraintLayout alertLayer = view.findViewById(R.id.alertLayer);
 
@@ -106,6 +112,8 @@ public class ProjectPageFragment extends Fragment {
         final EditText contributorName = view.findViewById(R.id.contributorName);
 
         final EditText contributorPosition = view.findViewById(R.id.contributorPosition);
+
+
 
         TextView AddButton  = view.findViewById(R.id.add_list);
 
@@ -133,10 +141,11 @@ public class ProjectPageFragment extends Fragment {
         final CheckBox itemIsComplete = view.findViewById(R.id.itemActivity);
 
         Button listItemSubmit = view.findViewById(R.id.listItemSubmit);
-        if(itemName.getText()+"" != "") {
-            listItemSubmit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+
+        listItemSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemName.getText()+"" != "") {
                     errorList.setVisibility(View.GONE);
                     listItems.add(new ListItem(itemName.getText() + "", itemIsComplete.isChecked()));
 
@@ -145,14 +154,16 @@ public class ProjectPageFragment extends Fragment {
 
                     alertLayer.setVisibility(View.INVISIBLE);
                     System.out.println(itemIsComplete.isChecked());
-                    adapter[0] = new ProjectRecyclerAdapter(getContext(), listItems);
-                    recyclerView.setAdapter(adapter[0]);
 
+                    recyclerView.setAdapter(new ProjectRecyclerAdapter(getContext(), listItems));
+
+                    alertLayer.setVisibility(View.GONE);
+                }else{
+                    errorList.setVisibility(View.VISIBLE);
                 }
-            });
-        }else{
-            errorList.setVisibility(View.VISIBLE);
-        }
+            }
+        });
+
 
 
 
@@ -184,22 +195,24 @@ public class ProjectPageFragment extends Fragment {
             }
         });
 
+        Button setContributor = view.findViewById(R.id.contributorSubmit);
 
-
-        if (contributorName.getText()+"" != "" && contributorPosition.getText()+"" != "") {
-            addContributor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        setContributor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (contributorName.getText()+"" != "" && contributorPosition.getText()+"" != "") {
                     errorContributors.setVisibility(View.GONE);
                     contributors.add(new Contributor(contributorName.getText()+"","",R.drawable.ic_launcher_round,contributorPosition.getText()+""));
                     contributorView.setAdapter(new ProjectContributerRecyclerAdapter(getContext(),contributors));
                     contributorName.setText("");
                     contributorPosition.setText("");
+                    contributorLayout.setVisibility(View.GONE);
+                }else{
+                    errorContributors.setVisibility(View.VISIBLE);
                 }
-            });
-        }else{
-            errorContributors.setVisibility(View.VISIBLE);
-        }
+            }
+        });
+
         return view;
     }
 

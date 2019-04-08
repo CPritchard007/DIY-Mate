@@ -12,10 +12,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements  ProjectPageFragment.OnFragmentInteractionListener,
                                                                 ProjectsListFragment.OnFragmentInteractionListener,
-                                                                AddProjectFragment.OnFragmentInteractionListener
-                                                                {
+                                                                AddProjectFragment.OnFragmentInteractionListener {
 
- public FragmentManager fm = getSupportFragmentManager();
+    public final FragmentManager fm = getSupportFragmentManager();
 
     public static BottomNavigationView navigation;
     public BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -41,13 +40,13 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
 
 
         fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
 
-         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -58,5 +57,8 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
 
     }
 
-
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }

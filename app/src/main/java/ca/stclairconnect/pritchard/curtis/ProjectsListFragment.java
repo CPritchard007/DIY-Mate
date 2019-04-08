@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 
 
 /**
@@ -82,25 +83,9 @@ public class ProjectsListFragment extends Fragment {
 
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler);
-        recyclerView.setAdapter(new ProjectListRecyclerAdapter(getContext(),db.getAllProjects()));
+        recyclerView.setAdapter(new ProjectListRecyclerAdapter(getContext(),db.getAllProjects(), getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        final Switch global_local = view.findViewById(R.id.LocalGlobal);
-        final ImageView imageView = view.findViewById(R.id.DisplayListType);
-        final ImageView addButton = view.findViewById(R.id.add_profile);
-
-        global_local.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (global_local != null) {
-                    if (isChecked) {
-                        imageView.setImageResource(R.drawable.ic_person_black_24dp);
-                    }else{
-                        imageView.setImageResource(R.drawable.ic_group_black_24dp);
-                    }
-                }
-            }
-        });
-
+        final TextView addButton = view.findViewById(R.id.add_profile);
 
 
 

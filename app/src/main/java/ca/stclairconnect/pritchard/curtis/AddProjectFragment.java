@@ -4,11 +4,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import ca.stclairconnect.pritchard.curtis.Objects.Project;
 
@@ -70,16 +77,36 @@ public class AddProjectFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_project, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
+
+
+        final int image = R.drawable.ic_launcher_round;
         final EditText name = view.findViewById(R.id.name);
         final EditText desc = view.findViewById(R.id.desc);
+        final EditText tag = view.findViewById(R.id.tags);
+        Button addTag = view.findViewById(R.id.add_tag);
         Button submit = view.findViewById(R.id.submit);
+        final ListView list = view.findViewById(R.id.listView);
+        final ArrayList<String> tags = new ArrayList<>();
+        list.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tags));
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatabaseHelper db = new DatabaseHelper(getContext());
-                db.addProject(new Project(name.getText()+"", android.R.drawable.star_big_on,desc.getText()+""));
+                db.addProject(new Project(name.getText()+"", image ,desc.getText()+""));
             }
         });
+
+        addTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tag.getText()+"" != "") {
+                    tags.add(tag.getText()+"");
+                }
+                list.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, tags));
+            }
+        });
+
         return view;
     }
 
