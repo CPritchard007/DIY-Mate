@@ -36,38 +36,9 @@
             <ImageView
                 android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="15dp" />
-
-            <com.nex3z.flowlayout.FlowLayout
-                android:id="@+id/gallery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="15dp">
-
-            </com.nex3z.flowlayout.FlowLayout>
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/viewpagerCapsil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/leftIndicator"
-                    android:layout_width="30dp"
-                    android:layout_height="0dp"
-                    android:text="Button"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/rightIndicator"
-                    android:layout_width="30dp"
-                    android:layout_height="0dp"
-                    android:text="Button"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </android.support.constraint.ConstraintLayout>
+                android:layout_height="200dp"
+                android:minHeight="15dp"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/description"

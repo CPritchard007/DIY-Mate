@@ -40,10 +40,12 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
         if(savedInstanceState == null)
+            if (db.getAllProjects().isEmpty()){
+            fm.beginTransaction().replace(R.id.content, new AddProjectFragment()).addToBackStack(null).commit();
+            }else
         fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);

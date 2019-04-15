@@ -131,7 +131,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 System.out.println("id: " + cursor.getString(0) +
                         "\nname: " + cursor.getString(1) + "\nimage: "+cursor.getString(2)+"\ndescription: "+cursor.getString(3));
-                projects.add(new Project(Integer.parseInt(cursor.getString(0)),cursor.getString(1),Integer.parseInt(cursor.getString(2)),cursor.getString(3)));
+                projects.add(new Project(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2),cursor.getString(3)));
                 System.out.println(projects.size());
             } while(cursor.moveToNext());
         }
@@ -148,7 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             // pass all inner values as an arraylist
             project = new Project(Integer.parseInt(cursor.getString(0)),
-                    cursor.getString(1),Integer.parseInt(cursor.getString(2)),cursor.getString(3));
+                    cursor.getString(1),cursor.getString(2),cursor.getString(3));
         }
         db.close();
         return project;

@@ -1,6 +1,8 @@
 package ca.stclairconnect.pritchard.curtis;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -93,7 +95,8 @@ public class ProjectPageFragment extends Fragment {
         System.out.println(project.getName());
 
         ImageView header = view.findViewById(R.id.header);
-        header.setImageResource(project.getImage());
+        Bitmap image = BitmapFactory.decodeFile(project.getImage());
+        header.setImageBitmap(image);
 
         TextView projectName = view.findViewById(R.id.title);
         projectName.setText(project.getName());

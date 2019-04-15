@@ -14,6 +14,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
@@ -63,7 +65,7 @@ public class AddProjectFragment extends Fragment {
     private static final int CAMERA_PERMISSION_LABEL = 2;
     private String imageLocation;
     private int imageId;
-
+    CircleImageView projectImageView;
 
 
     public AddProjectFragment() {
@@ -104,33 +106,22 @@ public class AddProjectFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_project, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
 
-        final CircleImageView projectImageView = view.findViewById(R.id.projectImage);
+        projectImageView = view.findViewById(R.id.projectImage);
         final EditText name = view.findViewById(R.id.name);
         final EditText desc = view.findViewById(R.id.desc);
-        final EditText tag = view.findViewById(R.id.tags);
-        Button addTag = view.findViewById(R.id.add_tag);
+
         Button submit = view.findViewById(R.id.submit);
-        final ListView list = view.findViewById(R.id.listView);
-        final ArrayList<String> tags = new ArrayList<>();
-        list.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tags));
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatabaseHelper db = new DatabaseHelper(getContext());
-                db.addProject(new Project(name.getText()+"", new Picture(imageLocation).getId() ,desc.getText()+""));
+                db.addProject(new Project(name.getText()+"", imageLocation,desc.getText()+""));
+                ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
+
             }
         });
 
-        addTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(tag.getText()+"" != "") {
-                    tags.add(tag.getText()+"");
-                }
-                list.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, tags));
-            }
-        });
 
 
         projectImageView.setOnClickListener(new View.OnClickListener() {
@@ -215,21 +206,17 @@ public class AddProjectFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //Check who sent us a result and what the status of that result
         if(requestCode == CAMERA_INTENT_LABEL && resultCode == RESULT_OK){
-            //Decode the image from where it is located on the phone
+
             Bitmap image = BitmapFactory.decodeFile(imageLocation);
-            //Dynamically build an ImageView of the image and display it on the screen
-            ImageView imageView = new ImageView(getContext());
-            imageView.setImageBitmap(image);
+            projectImageView.setImageBitmap(image);
 
 
             DatabaseHelper db = new DatabaseHelper(getContext());
-            //Add the picture to the DB
-            //Grab the location of the picture in the DB
             int picID = db.addPicture(new Picture(imageLocation));
             if(picID != -1){
                 imageId = picID;
+
 
             }
         }

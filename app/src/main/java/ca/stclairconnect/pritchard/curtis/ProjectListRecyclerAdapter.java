@@ -3,6 +3,8 @@ package ca.stclairconnect.pritchard.curtis;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Constraints;
@@ -43,7 +45,8 @@ ArrayList<Project> projects;
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         final Project project = projects.get(i);
-        ((CustomViewHolder)viewHolder).circleImageView.setImageResource(project.getImage());
+        Bitmap image = BitmapFactory.decodeFile(project.getImage());
+        ((CustomViewHolder)viewHolder).circleImageView.setImageBitmap(image);
         ((CustomViewHolder)viewHolder).projectTitle.setText(project.getName());
         ((CustomViewHolder)viewHolder).projectDescription.setText(project.getDescription());
         ((CustomViewHolder)viewHolder).content.setOnClickListener(new View.OnClickListener() {

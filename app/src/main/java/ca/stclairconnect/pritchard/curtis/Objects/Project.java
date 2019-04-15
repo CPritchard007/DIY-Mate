@@ -4,20 +4,20 @@ import java.util.ArrayList;
 
 public class Project {
     private int id;
-    private int image;
+    private String image;
     private String name;
     private String description;
     private int[] gallery;
     private ArrayList<ListItem> listItems;
 
-    public Project(int id, String name, int image, String description) {
+    public Project(int id, String name, String image, String description) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.description = description;
 
     }
-    public Project(String name, int image,  String description) {
+    public Project(String name, String image,  String description) {
         this.image = image;
         this.name = name;
         this.description = description;
@@ -31,11 +31,11 @@ public class Project {
         this.id = id;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
