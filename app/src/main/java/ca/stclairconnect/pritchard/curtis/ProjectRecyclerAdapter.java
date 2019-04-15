@@ -17,14 +17,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ca.stclairconnect.pritchard.curtis.Objects.ListItem;
+import ca.stclairconnect.pritchard.curtis.Objects.Project;
 
 
 public class ProjectRecyclerAdapter extends RecyclerView.Adapter {
         private Context context;
         private ArrayList<ListItem> listItems;
-    public ProjectRecyclerAdapter(Context context,@NonNull ArrayList<ListItem> items){
+    public ProjectRecyclerAdapter(Context context, Project project){
         this.context = context;
-        this.listItems = items;
+        DatabaseHelper db = new DatabaseHelper(context);
+        this.listItems = db.getListItemsByProjectId(project.getId());
+        System.out.println("THERE ARE "+ db.getListItemsByProjectId(project.getId()).size() + " items in this list");
+
     }
 
 
@@ -74,7 +78,7 @@ public class ProjectRecyclerAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return listItems == null?0:listItems.size();
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder{

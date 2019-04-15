@@ -15,14 +15,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ca.stclairconnect.pritchard.curtis.Objects.Contributor;
+import ca.stclairconnect.pritchard.curtis.Objects.Project;
 
 public class ProjectContributerRecyclerAdapter extends RecyclerView.Adapter {
     private Context context;
-   private ArrayList<Contributor> contributors;
-
-    public ProjectContributerRecyclerAdapter(Context context, @NonNull ArrayList<Contributor> contributors){
+   Project project;
+    ArrayList<Contributor> contributors;
+    public ProjectContributerRecyclerAdapter(Context context, Project project){
         this.context = context;
-        this.contributors = contributors;
+        this.project = project;
+        DatabaseHelper db = new DatabaseHelper(context);
+        contributors = db.getContributorByProjectId(project.getId());
 
     }
     @NonNull
@@ -38,8 +41,8 @@ public class ProjectContributerRecyclerAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
         Contributor contributor = contributors.get(i);
-        ((CustomViewHolder)viewHolder).image.setImageResource(R.drawable.ic_launcher_round);
-//        ((CustomViewHolder)viewHolder).image.setImageResource(contributor.getImage());
+      //  ((CustomViewHolder)viewHolder).image.setImageResource(R.drawable.ic_launcher_round);
+        ((CustomViewHolder)viewHolder).image.setImageResource(contributor.getImage());
         ((CustomViewHolder)viewHolder).name.setText(contributor.getName());
     }
 

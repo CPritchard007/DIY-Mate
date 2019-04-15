@@ -76,21 +76,20 @@ public class ProjectPageFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_project_page, container, false);
         MainActivity.navigation.setVisibility(View.VISIBLE);
 
+        DatabaseHelper db = new DatabaseHelper(getContext());
+        final Project project = db.getProject(mParam1);
+
         final RecyclerView recyclerView = view.findViewById(R.id.itemList);
 
 
-        final ArrayList<ListItem> listItems = new ArrayList<ListItem>();
+        ArrayList<ListItem> listItems = new ArrayList<ListItem>();
         final ArrayList<Contributor> contributors = new ArrayList<Contributor>();
 
 
-        listItems.add(new ListItem("This is the name",true));
-
-        contributors.add(new Contributor("Darrec","his name is Darrec", R.drawable.ic_launcher_round,"healer"));
-
-        DatabaseHelper db = new DatabaseHelper(getContext());
 
 
-        Project project = db.getProject(mParam1);
+
+
         System.out.println(project.getName());
 
         ImageView header = view.findViewById(R.id.header);
@@ -101,7 +100,7 @@ public class ProjectPageFragment extends Fragment {
         TextView projectDescription = view.findViewById(R.id.description);
         projectDescription.setText(project.getDescription());
 
-        recyclerView.setAdapter(new ProjectRecyclerAdapter(getContext(), listItems));
+        recyclerView.setAdapter(new ProjectRecyclerAdapter(getContext(), project));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
@@ -112,7 +111,8 @@ public class ProjectPageFragment extends Fragment {
         final EditText contributorName = view.findViewById(R.id.contributorName);
 
         final EditText contributorPosition = view.findViewById(R.id.contributorPosition);
-
+        final EditText contributorDescription = view.findViewById(R.id.contributorDescription);
+        System.out.println("-----------------"+project.getId() );
 
 
         TextView AddButton  = view.findViewById(R.id.add_list);
@@ -145,9 +145,12 @@ public class ProjectPageFragment extends Fragment {
         listItemSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseHelper db = new DatabaseHelper(getContext());
                 if(itemName.getText()+"" != "") {
                     errorList.setVisibility(View.GONE);
-                    listItems.add(new ListItem(itemName.getText() + "", itemIsComplete.isChecked()));
+                    //listItems.add());
+
+                    System.out.println(db.addListItem(new ListItem(itemName.getText() + "", itemIsComplete.isChecked(),project.getId())));
 
                     itemName.setText("");
                     itemIsComplete.setChecked(false);
@@ -155,8 +158,9 @@ public class ProjectPageFragment extends Fragment {
                     alertLayer.setVisibility(View.INVISIBLE);
                     System.out.println(itemIsComplete.isChecked());
 
-                    recyclerView.setAdapter(new ProjectRecyclerAdapter(getContext(), listItems));
+                    recyclerView.setAdapter(new ProjectRecyclerAdapter(getContext(), project));
 
+                    System.out.println();
                     alertLayer.setVisibility(View.GONE);
                 }else{
                     errorList.setVisibility(View.VISIBLE);
@@ -168,7 +172,7 @@ public class ProjectPageFragment extends Fragment {
 
 
         final RecyclerView contributorView = view.findViewById(R.id.contributor);
-        ProjectContributerRecyclerAdapter adapter1 = new ProjectContributerRecyclerAdapter(getContext(), contributors);
+        ProjectContributerRecyclerAdapter adapter1 = new ProjectContributerRecyclerAdapter(getContext(), project);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,true);
         contributorView.setLayoutManager(manager);
 
@@ -200,12 +204,14 @@ public class ProjectPageFragment extends Fragment {
         setContributor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (contributorName.getText()+"" != "" && contributorPosition.getText()+"" != "") {
+                DatabaseHelper db = new DatabaseHelper(getContext());
+                if (contributorName.getText()+"" != "" && contributorPosition.getText()+"" != "" && contributorDescription.getText() + "" != "") {
                     errorContributors.setVisibility(View.GONE);
-                    contributors.add(new Contributor(contributorName.getText()+"","",R.drawable.ic_launcher_round,contributorPosition.getText()+""));
-                    contributorView.setAdapter(new ProjectContributerRecyclerAdapter(getContext(),contributors));
+                    db.addContributor(new Contributor(contributorName.getText()+"",contributorDescription.getText()+"", R.drawable.ic_launcher_round, contributorPosition.getText()+"",project.getId()));
+                    contributorView.setAdapter(new ProjectContributerRecyclerAdapter(getContext(),project));
                     contributorName.setText("");
                     contributorPosition.setText("");
+                    contributorDescription.setText("");
                     contributorLayout.setVisibility(View.GONE);
                 }else{
                     errorContributors.setVisibility(View.VISIBLE);

@@ -25,8 +25,6 @@ public class ProjectListRecyclerAdapter extends RecyclerView.Adapter {
 
     Context context;
     Activity activity;
-String[] names = {"Abra", "Cadabra", "Drowzy", "Charzard", "Picachu"};
-//String[] projects = {"Tabletop Sim", "Tabletop Arcade", "DIY Console", "Build a Controller", "Pi Mirror"};
 ArrayList<Project> projects;
     public ProjectListRecyclerAdapter(Context context, ArrayList<Project> projects, Activity activity){
        this.context = context;
@@ -52,7 +50,6 @@ ArrayList<Project> projects;
             @Override
             public void onClick(View v) {
                 ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.content, ProjectPageFragment.newInstance(project.getId())).addToBackStack(null).commit();
-                    System.out.println("----------------------------------------------");
             }
         });
 

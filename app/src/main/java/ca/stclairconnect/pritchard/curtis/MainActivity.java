@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
 
         setContentView(R.layout.activity_main);
 
-
+        if(savedInstanceState == null)
         fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);

@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.List;
 
 
 import ca.stclairconnect.pritchard.curtis.Objects.*;
@@ -20,8 +22,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_PROJECT = "project";
     public static final String TABLE_LISTITEM = "list_item";
     public static final String TABLE_TAGS = "tags";
-    public static final String TABLE_PROJECT_LISTITEM = "project_list_item";
     public static final String TABLE_PICTURES = "picture";
+    public static final String TABLE_CONTRIBUTORS = "contributors";
 
     /*
      * Project TABLE
@@ -35,12 +37,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * LISTITEM TABLE
      */
     public static final String LISTITEM_COLUMN_ID = "id";
+    public static final String LISTITEM_COLUMN_TEXT = "input";
     public static final String LISTITEM_COLUMN_ACTIVE = "active";
     public static final String LISTITEM_COLUMN_URL = "url";
+    public static final String LISTITEM_COLUMN_PROJECT = "project_id";
 
-    public static final String PROJECT_LISTITEM_ID = "id";
-    public static final String PROJECT_LIST_PROJECT_ID = "project_id";
-    public static final String PROJECT_LIST_ITEMLIST_ID = "list_id";
 
 
     public static final String TAGS_COLUMN_ID = "id";
@@ -50,7 +51,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PICTURE_COLUMN_ID = "id";
     public static final String PICTURE_COLUMN_RESOURCE = "resource";
 
-
+    public static final String CONTRIBUTORS_COLUMN_ID = "id";
+    public static final String CONTRIBUTORS_COLUMN_NAME = "name";
+    public static final String CONTRIBUTORS_COLUMN_IMAGE = "image";
+    public static final String CONTRIBUTORS_COLUMN_DESCRIPTION = "description";
+    public static final String CONTRIBUTORS_COLUMN_POSITION = "position";
+    public static final String CONTRIBUTORS_COLUMN_PROJECT = "project_id";
 
 
     public static final String CREATE_PROJECT_TABLE = "CREATE TABLE `" + TABLE_PROJECT + "` (" +
@@ -65,19 +71,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             TAGS_COLUMN_NAME + " VARCHAR(50) NOT NULL" +
             ")";
 
-    public static final String CREATE_ITEMSLIST_TABLE = "CREATE TABLE `"+ TABLE_LISTITEM + "` (" +
+    public static final String CREATE_LISTITEM_TABLE = "CREATE TABLE `"+ TABLE_LISTITEM + "` (" +
             LISTITEM_COLUMN_ID + " INTEGER PRIMARY KEY," +
+            LISTITEM_COLUMN_TEXT + " TEXT NOT NULL," +
+            LISTITEM_COLUMN_URL + " TEXT," +
             LISTITEM_COLUMN_ACTIVE + " BIT DEFAULT 0," +
-            LISTITEM_COLUMN_URL + " TEXT NOT NULL" +
+            LISTITEM_COLUMN_PROJECT + " INT NOT NULL, " +
+            "FOREIGN KEY (" + LISTITEM_COLUMN_PROJECT + ") REFERENCES `" + TABLE_PROJECT + "`("+ PROJECT_COLUMN_ID +")"+
             ")";
 
-    public static final String CREATE_PROJECT_LIST_ITEM_TABLE = "CREATE TABLE `" + TABLE_PROJECT_LISTITEM + "` (" +
-            PROJECT_LISTITEM_ID + " INTEGER NOT NULL," +
-            PROJECT_LIST_PROJECT_ID + " INT NOT NULL," +
-            PROJECT_LIST_ITEMLIST_ID + " INT NOT NULL" +
+    public static final String CREATE_CONTRIBUTORS_TABLE = "CREATE TABLE `" + TABLE_CONTRIBUTORS + "`(" +
+            CONTRIBUTORS_COLUMN_ID+" INTEGER PRIMARY KEY," +
+            CONTRIBUTORS_COLUMN_NAME+" TEXT NOT NULL," +
+            CONTRIBUTORS_COLUMN_IMAGE+" INT NOT NULL," +
+            CONTRIBUTORS_COLUMN_DESCRIPTION+" TEXT," +
+            CONTRIBUTORS_COLUMN_POSITION+" TEXT,"+
+            CONTRIBUTORS_COLUMN_PROJECT + " INT NOT NULL, " +
+            "FOREIGN KEY (" + CONTRIBUTORS_COLUMN_PROJECT + ") REFERENCES `" + TABLE_PROJECT +"`(" + PROJECT_COLUMN_ID + ")" +
             ")";
-
-
 
     public static final String CREATE_PICTURES_TABLE = "CREATE TABLE " +
             TABLE_PICTURES + "(" + PICTURE_COLUMN_ID + " INTEGER PRIMARY KEY,"
@@ -90,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         System.out.println(CREATE_PROJECT_TABLE);
         System.out.println(CREATE_TAGS_TABLE);
-        System.out.println(CREATE_PROJECT_LIST_ITEM_TABLE);
+        System.out.println(CREATE_LISTITEM_TABLE);
 //        addTag(new Tag("name"),);
     }
 
@@ -98,8 +109,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_PROJECT_TABLE);
         db.execSQL(CREATE_TAGS_TABLE);
-        db.execSQL(CREATE_ITEMSLIST_TABLE);
-        db.execSQL(CREATE_PROJECT_LIST_ITEM_TABLE);
+        db.execSQL(CREATE_PICTURES_TABLE);
+        db.execSQL(CREATE_LISTITEM_TABLE);
+        db.execSQL(CREATE_CONTRIBUTORS_TABLE);
     }
 
     @Override
@@ -210,12 +222,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //    }
 
 
-    public void projectItemForeignKey(Project project, ListItem listItem){
+
+
+    public int addPicture(Picture pic){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(PROJECT_LIST_PROJECT_ID,project.getId());
-        values.put(PROJECT_LIST_ITEMLIST_ID, listItem.getId());
-        db.insert(TABLE_PROJECT_LISTITEM,null,values);
+        values.put(PICTURE_COLUMN_RESOURCE, pic.getResource());
+        db.insert(TABLE_PICTURES, null, values);
+        //Grab the picture ID
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT last_insert_rowid()",
+                null);
+        if(cursor.moveToFirst()){
+            int id = Integer.parseInt(cursor.getString(0));
+            db.close();
+            return id;
+        }
+        db.close();
+        return -1;
     }
 
     public Picture getPicture(int id){
@@ -250,5 +274,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return pictureList;
+    }
+
+    public ArrayList<ListItem> addListItem(ListItem listItem) {
+        System.out.println(listItem.getName());
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(LISTITEM_COLUMN_PROJECT, listItem.getProjectId());
+        values.put(LISTITEM_COLUMN_TEXT, listItem.getName());
+        values.put(LISTITEM_COLUMN_URL, listItem.getUrl());
+        values.put(LISTITEM_COLUMN_ACTIVE, listItem.isActive());
+        db.insert(TABLE_LISTITEM, null, values);
+        return this.getListItemsByProjectId(1);
+    }
+
+
+    public ArrayList<ListItem> getListItemsByProjectId(int id){
+        ArrayList<ListItem> listItems = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_LISTITEM;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do{
+                if(id == Integer.parseInt(cursor.getString(4)))
+                    listItems.add(new ListItem(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2),Boolean.getBoolean(cursor.getString(3)),Integer.parseInt(cursor.getString(4))));
+            }while (cursor.moveToNext());
+        }
+
+        db.close();
+        return listItems;
+    }
+
+    public void addContributor(Contributor contributor) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CONTRIBUTORS_COLUMN_NAME, contributor.getName());
+        values.put(CONTRIBUTORS_COLUMN_IMAGE, contributor.getImage() );
+        values.put(CONTRIBUTORS_COLUMN_POSITION, contributor.getPosition());
+        values.put(CONTRIBUTORS_COLUMN_DESCRIPTION, contributor.getDescription());
+        values.put(CONTRIBUTORS_COLUMN_PROJECT, contributor.getProjectId());
+        db.insert(TABLE_CONTRIBUTORS, null, values);
+
+    }
+
+
+
+    public ArrayList<Contributor> getContributorByProjectId(int id){
+        ArrayList<Contributor> contributors = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_CONTRIBUTORS;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do{
+                if(id == Integer.parseInt(cursor.getString(5)))
+
+                    contributors.add(new Contributor(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(3),Integer.parseInt(cursor.getString(2)),cursor.getString(4), Integer.parseInt(cursor.getString(5))));
+            }while (cursor.moveToNext());
+        }
+
+        db.close();
+        return contributors;
     }
 }

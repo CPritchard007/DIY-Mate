@@ -5,6 +5,7 @@ public class ListItem {
     private String name;
     private boolean active;
     private String url;
+    private int project_id;
 
 
 
@@ -33,7 +34,34 @@ public class ListItem {
         this.name = name;
         this.active = active;
 
+    }
 
+    public ListItem(String name, boolean active, int project_id) {
+        this.name = name;
+        this.active = active;
+        this.project_id = project_id;
+
+    }
+    public ListItem(int id, String name, boolean active, int project_id) {
+        this.id = id;
+        this.name = name;
+        this.active = active;
+        this.project_id = project_id;
+
+    }
+    public ListItem(int id, String name,String url, boolean active, int project_id) {
+        this.id = id;
+        this.name = name;
+        this.active = active;
+        this.project_id = project_id;
+
+
+    }
+    public ListItem(String name, String url, boolean active, int project_id) {
+        this.id = id;
+        this.name = name;
+        this.active = active;
+        this.project_id = project_id;
     }
     public int getId() {
         return id;
@@ -65,5 +93,13 @@ public class ListItem {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getProjectId() {
+        return project_id;
+    }
+
+    public void setProjectId(int project_id) {
+        this.project_id = project_id;
     }
 }

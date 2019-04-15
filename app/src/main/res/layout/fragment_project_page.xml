@@ -177,7 +177,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backFade"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -227,7 +227,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal" />
 
             <Button
                 android:id="@+id/listItemSubmit"
@@ -257,7 +257,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backFade"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -312,6 +312,16 @@
                 android:layout_marginRight="15dp"
                 android:ems="10"
                 android:hint="Position"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/contributorDescription"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:ems="10"
                 android:inputType="textPersonName" />
 
             <Button
