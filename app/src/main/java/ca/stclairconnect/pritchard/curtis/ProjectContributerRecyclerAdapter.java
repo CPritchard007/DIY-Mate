@@ -44,6 +44,7 @@ public class ProjectContributerRecyclerAdapter extends RecyclerView.Adapter {
       //  ((CustomViewHolder)viewHolder).image.setImageResource(R.drawable.ic_launcher_round);
         ((CustomViewHolder)viewHolder).image.setImageResource(contributor.getImage());
         ((CustomViewHolder)viewHolder).name.setText(contributor.getName());
+        ((CustomViewHolder)viewHolder).position.setText(contributor.getPosition());
     }
 
     @Override
@@ -55,12 +56,13 @@ public class ProjectContributerRecyclerAdapter extends RecyclerView.Adapter {
 
         protected ImageView image;
         protected TextView name;
+        protected TextView position;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.contributorImage);
             name = itemView.findViewById(R.id.contributorName);
-
+            position = itemView.findViewById(R.id.position);
 
         }
     }

@@ -28,9 +28,6 @@ public class MainActivity extends AppCompatActivity implements  ProjectPageFragm
                 case R.id.navigation_project_local:
                     fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
                     return true;
-                case R.id.navigation_profile:
-                    fm.beginTransaction().replace(R.id.content, new ProjectPageFragment()).addToBackStack(null).commit();
-                    return true;
             }
             return false;
 
