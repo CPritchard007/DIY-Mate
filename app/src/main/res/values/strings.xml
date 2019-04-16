@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">DIY-Mate</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">Local Projects</string>
+    <string name="title_dashboard">Global Projects</string>
+    <string name="title_notifications">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_empty_field" >One or more of the fields have not yet been completed. Please complete them and try again.</string>
 </resources>

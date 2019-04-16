@@ -1,33 +1,39 @@
 package ca.stclairconnect.pritchard.curtis;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
-    private TextView mTextMessage;
+public class MainActivity extends AppCompatActivity implements  ProjectPageFragment.OnFragmentInteractionListener,
+                                                                ProjectsListFragment.OnFragmentInteractionListener,
+                                                                AddProjectFragment.OnFragmentInteractionListener {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    public final FragmentManager fm = getSupportFragmentManager();
+
+    public static BottomNavigationView navigation;
+    public BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                //use the same Recycler page for both the global and local list
+                case R.id.navigation_project_local:
+                    fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_profile:
+                    fm.beginTransaction().replace(R.id.content, new ProjectPageFragment()).addToBackStack(null).commit();
                     return true;
             }
             return false;
+
         }
     };
 
@@ -35,10 +41,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        if(savedInstanceState == null)
+            if (db.getAllProjects().isEmpty()){
+            fm.beginTransaction().replace(R.id.content, new AddProjectFragment()).addToBackStack(null).commit();
+            }else
+        fm.beginTransaction().replace(R.id.content, new ProjectsListFragment()).addToBackStack(null).commit();
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }
